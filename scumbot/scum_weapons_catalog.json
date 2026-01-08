@@ -1,0 +1,1346 @@
+[
+  {
+    "weapon_key": "AUTOCROSSBOW",
+    "display_name": "Auto Crossbow",
+    "spawn_id": null,
+    "group": "Bows",
+    "page_url": "https://scum.wiki.gg/wiki/Auto_Crossbow",
+    "image_url": null
+  },
+  {
+    "weapon_key": "BLACKHAWKCROSSBOW",
+    "display_name": "BlackHawk Crossbow",
+    "spawn_id": "Weapon_BlackHawk_Crossbow",
+    "group": "Bows",
+    "page_url": "https://scum.wiki.gg/wiki/BlackHawk_Crossbow",
+    "image_url": "https://scum.wiki.gg/images/ACOG.png?206903"
+  },
+  {
+    "weapon_key": "COMPOUNDBOW",
+    "display_name": "Compound Bow",
+    "spawn_id": "Compound_Bow",
+    "group": "Bows",
+    "page_url": "https://scum.wiki.gg/wiki/Compound_Bow",
+    "image_url": null
+  },
+  {
+    "weapon_key": "IMPROVISEDAUTOCROSSBOW",
+    "display_name": "Improvised Auto Crossbow",
+    "spawn_id": "Weapon_Improvised_AutoCrossbow",
+    "group": "Bows",
+    "page_url": "https://scum.wiki.gg/wiki/Improvised_Auto_Crossbow",
+    "image_url": null
+  },
+  {
+    "weapon_key": "IMPROVISEDBOW",
+    "display_name": "Improvised Bow",
+    "spawn_id": null,
+    "group": "Bows",
+    "page_url": "https://scum.wiki.gg/wiki/Improvised_Bow",
+    "image_url": "https://scum.wiki.gg/images/Improvised_Bow_20_Draw_Hold_Time.png?822193"
+  },
+  {
+    "weapon_key": "IMPROVISEDBOW",
+    "display_name": "Improvised Bow",
+    "spawn_id": null,
+    "group": "Bows",
+    "page_url": "https://scum.wiki.gg/wiki/Improvised_Bow",
+    "image_url": "https://scum.wiki.gg/images/Improvised_Bow_20_Draw_Hold_Time.png?822193"
+  },
+  {
+    "weapon_key": "IMPROVISEDBOW",
+    "display_name": "Improvised Bow",
+    "spawn_id": null,
+    "group": "Bows",
+    "page_url": "https://scum.wiki.gg/wiki/Improvised_Bow",
+    "image_url": "https://scum.wiki.gg/images/Improvised_Bow_20_Draw_Hold_Time.png?822193"
+  },
+  {
+    "weapon_key": "IMPROVISEDBOW",
+    "display_name": "Improvised Bow",
+    "spawn_id": null,
+    "group": "Bows",
+    "page_url": "https://scum.wiki.gg/wiki/Improvised_Bow",
+    "image_url": "https://scum.wiki.gg/images/Improvised_Bow_20_Draw_Hold_Time.png?822193"
+  },
+  {
+    "weapon_key": "IMPROVISEDCROSSBOW",
+    "display_name": "Improvised Crossbow",
+    "spawn_id": "BP_Weapon_Improvised_Crossbow",
+    "group": "Bows",
+    "page_url": "https://scum.wiki.gg/wiki/Improvised_Crossbow",
+    "image_url": null
+  },
+  {
+    "weapon_key": "RECURVEBOW40",
+    "display_name": "Recurve Bow",
+    "spawn_id": "BPC_Recurve_Bow_40",
+    "group": "Bows",
+    "page_url": "https://scum.wiki.gg/wiki/Recurve_Bow",
+    "image_url": "https://scum.wiki.gg/images/Ballista_100_Draw_Hold_Time.png?ac92bd"
+  },
+  {
+    "weapon_key": "RECURVEBOW40",
+    "display_name": "Recurve Bow",
+    "spawn_id": "BPC_Recurve_Bow_40",
+    "group": "Bows",
+    "page_url": "https://scum.wiki.gg/wiki/Recurve_Bow",
+    "image_url": "https://scum.wiki.gg/images/Ballista_100_Draw_Hold_Time.png?ac92bd"
+  },
+  {
+    "weapon_key": "RECURVEBOW40",
+    "display_name": "Recurve Bow",
+    "spawn_id": "BPC_Recurve_Bow_40",
+    "group": "Bows",
+    "page_url": "https://scum.wiki.gg/wiki/Recurve_Bow",
+    "image_url": "https://scum.wiki.gg/images/Ballista_100_Draw_Hold_Time.png?ac92bd"
+  },
+  {
+    "weapon_key": "RECURVEBOW40",
+    "display_name": "Recurve Bow",
+    "spawn_id": "BPC_Recurve_Bow_40",
+    "group": "Bows",
+    "page_url": "https://scum.wiki.gg/wiki/Recurve_Bow",
+    "image_url": "https://scum.wiki.gg/images/Ballista_100_Draw_Hold_Time.png?ac92bd"
+  },
+  {
+    "weapon_key": "RECURVEBOW40",
+    "display_name": "Recurve Bow",
+    "spawn_id": "BPC_Recurve_Bow_40",
+    "group": "Bows",
+    "page_url": "https://scum.wiki.gg/wiki/Recurve_Bow",
+    "image_url": "https://scum.wiki.gg/images/Ballista_100_Draw_Hold_Time.png?ac92bd"
+  },
+  {
+    "weapon_key": "GRENADE",
+    "display_name": "Grenade",
+    "spawn_id": null,
+    "group": "Grenades",
+    "page_url": "https://scum.wiki.gg/wiki/Grenade",
+    "image_url": null
+  },
+  {
+    "weapon_key": "M84STUNGRENADE",
+    "display_name": "M84 Stun Grenade",
+    "spawn_id": null,
+    "group": "Grenades",
+    "page_url": "https://scum.wiki.gg/wiki/M84_Stun_Grenade",
+    "image_url": null
+  },
+  {
+    "weapon_key": "SMOKEGRENADE",
+    "display_name": "Smoke Grenade",
+    "spawn_id": null,
+    "group": "Grenades",
+    "page_url": "https://scum.wiki.gg/wiki/Smoke_Grenade",
+    "image_url": null
+  },
+  {
+    "weapon_key": "AK15",
+    "display_name": "AK-15",
+    "spawn_id": "Weapon_AK15",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/AK-15",
+    "image_url": null
+  },
+  {
+    "weapon_key": "AK47",
+    "display_name": "AK-47",
+    "spawn_id": "Weapon_AK47",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/AK-47",
+    "image_url": null
+  },
+  {
+    "weapon_key": "AKM",
+    "display_name": "AKM",
+    "spawn_id": "BPC_Weapon_AKM",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/AKM",
+    "image_url": null
+  },
+  {
+    "weapon_key": "AKS74U",
+    "display_name": "AKS-74U",
+    "spawn_id": "BP_Weapon_AKS_74U",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/AKS-74U",
+    "image_url": null
+  },
+  {
+    "weapon_key": "ASVAL",
+    "display_name": "AS Val",
+    "spawn_id": "BP_Weapon_AS_Val",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/AS_Val",
+    "image_url": null
+  },
+  {
+    "weapon_key": "AT4HEAT",
+    "display_name": "AT4 HEAT",
+    "spawn_id": "Weapon_AT4_HEAT",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/AT4_HEAT",
+    "image_url": null
+  },
+  {
+    "weapon_key": "AT4HEDP",
+    "display_name": "AT4 HEDP",
+    "spawn_id": "Weapon_AT4_HEDP",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/AT4_HEDP",
+    "image_url": null
+  },
+  {
+    "weapon_key": "AWM",
+    "display_name": "AWM",
+    "spawn_id": "BP_Weapon_AWM",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/AWM",
+    "image_url": null
+  },
+  {
+    "weapon_key": "AWP",
+    "display_name": "AWP",
+    "spawn_id": "BP_Weapon_AWP",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/AWP",
+    "image_url": null
+  },
+  {
+    "weapon_key": "CARBONHUNTER",
+    "display_name": "Carbon Hunter",
+    "spawn_id": "BP_Weapon_CarbonHunter",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/Carbon_Hunter",
+    "image_url": "https://scum.wiki.gg/images/.308_Suppressor.png?b213ff"
+  },
+  {
+    "weapon_key": "DT11B",
+    "display_name": "DT11B",
+    "spawn_id": "BP_Weapon_DT11B",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/DT11B",
+    "image_url": null
+  },
+  {
+    "weapon_key": "FLAREGUN",
+    "display_name": "Flare Gun",
+    "spawn_id": "BP_Weapon_FlareGun",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/Flare_Gun",
+    "image_url": null
+  },
+  {
+    "weapon_key": "GEAR",
+    "display_name": "Gear",
+    "spawn_id": null,
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/Gear",
+    "image_url": null
+  },
+  {
+    "weapon_key": "SF19",
+    "display_name": "HS SF19",
+    "spawn_id": "BP_Weapon_SF19",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/HS_SF19",
+    "image_url": null
+  },
+  {
+    "weapon_key": "HS9",
+    "display_name": "HS-9",
+    "spawn_id": "BP_Weapon_HS9",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/HS-9",
+    "image_url": null
+  },
+  {
+    "weapon_key": "HEARINGDAMAGE",
+    "display_name": "Hearing Damage",
+    "spawn_id": null,
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/Hearing_Damage",
+    "image_url": null
+  },
+  {
+    "weapon_key": "HUNTER85V2",
+    "display_name": "Hunter85",
+    "spawn_id": "BP_Weapon_Hunter85_V2",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/Hunter85",
+    "image_url": null
+  },
+  {
+    "weapon_key": "IMPROVISEDGRENADELAUNCHER",
+    "display_name": "Improvised Grenade Launcher",
+    "spawn_id": "BP_Weapon_ImprovisedGrenadeLauncher",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/Improvised_Grenade_Launcher",
+    "image_url": null
+  },
+  {
+    "weapon_key": "IMPROVISEDHANDGUN",
+    "display_name": "Improvised Handgun .50cal",
+    "spawn_id": "BP_Weapon_Improvised_Handgun",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/Improvised_Handgun_.50cal",
+    "image_url": "https://scum.wiki.gg/images/Bolts.png?4f224c"
+  },
+  {
+    "weapon_key": "IMPROVISEDSHOTGUN",
+    "display_name": "Improvised Shotgun",
+    "spawn_id": "BP_Weapon_Improvised_Shotgun",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/Improvised_Shotgun",
+    "image_url": null
+  },
+  {
+    "weapon_key": "JUDGE44",
+    "display_name": "Judge 44",
+    "spawn_id": "BPC_Weapon_Judge44",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/Judge_44",
+    "image_url": null
+  },
+  {
+    "weapon_key": "98KKARABINER",
+    "display_name": "Kar98",
+    "spawn_id": "BP_Weapon_98k_Karabiner",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/Kar98",
+    "image_url": null
+  },
+  {
+    "weapon_key": "KRUEGER",
+    "display_name": "Krueger",
+    "spawn_id": "Weapon_Krueger",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/Krueger",
+    "image_url": null
+  },
+  {
+    "weapon_key": "M1GARAND",
+    "display_name": "M1 Rifle",
+    "spawn_id": "BP_Weapon_M1_Garand",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/M1_Rifle",
+    "image_url": null
+  },
+  {
+    "weapon_key": "M16A4",
+    "display_name": "M16A4",
+    "spawn_id": "BP_Weapon_M16A4",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/M16A4",
+    "image_url": null
+  },
+  {
+    "weapon_key": "M1887",
+    "display_name": "M1887",
+    "spawn_id": "BP_Weapon_M1887",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/M1887",
+    "image_url": "https://scum.wiki.gg/images/AimPRO_Red_Dot_Sight.png?82db6f"
+  },
+  {
+    "weapon_key": "M1887SAWEDOFF",
+    "display_name": "M1887 Sawed Off",
+    "spawn_id": "BPC_Weapon_M1887_Sawed_off",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/M1887_Sawed_Off",
+    "image_url": null
+  },
+  {
+    "weapon_key": "MOSINNAGANT",
+    "display_name": "M1891",
+    "spawn_id": "BP_Weapon_MosinNagant",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/M1891",
+    "image_url": null
+  },
+  {
+    "weapon_key": "M249",
+    "display_name": "M249",
+    "spawn_id": "Weapon_M249",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/M249",
+    "image_url": null
+  },
+  {
+    "weapon_key": "M82A1",
+    "display_name": "M82A1",
+    "spawn_id": "BP_Weapon_M82A1",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/M82A1",
+    "image_url": null
+  },
+  {
+    "weapon_key": "MK18",
+    "display_name": "MK18",
+    "spawn_id": "BP_Weapon_MK18",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/MK18",
+    "image_url": null
+  },
+  {
+    "weapon_key": "MP5",
+    "display_name": "MP5",
+    "spawn_id": "BP_Weapon_MP5",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/MP5",
+    "image_url": null
+  },
+  {
+    "weapon_key": "MP5K",
+    "display_name": "MP5 K",
+    "spawn_id": "BPC_Weapon_MP5_K",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/MP5_K",
+    "image_url": null
+  },
+  {
+    "weapon_key": "MP5SD",
+    "display_name": "MP5 SD",
+    "spawn_id": "BPC_Weapon_MP5_SD",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/MP5_SD",
+    "image_url": null
+  },
+  {
+    "weapon_key": "PEACEKEEPER38",
+    "display_name": "PeaceKeeper 38",
+    "spawn_id": "BPC_Weapon_PeaceKeeper38",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/PeaceKeeper_38",
+    "image_url": null
+  },
+  {
+    "weapon_key": "RPG7",
+    "display_name": "RPG7",
+    "spawn_id": null,
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/RPG7",
+    "image_url": "https://scum.wiki.gg/images/RPG7.png?798437"
+  },
+  {
+    "weapon_key": "RPK",
+    "display_name": "RPK",
+    "spawn_id": "BPC_Weapon_RPK",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/RPK",
+    "image_url": null
+  },
+  {
+    "weapon_key": "SDASS",
+    "display_name": "SDASS 12M",
+    "spawn_id": "BPC_Weapon_SDASS",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/SDASS_12M",
+    "image_url": null
+  },
+  {
+    "weapon_key": "SVDDRAGUNOV",
+    "display_name": "SVD",
+    "spawn_id": "BP_Weapon_SVD_Dragunov",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/SVD",
+    "image_url": null
+  },
+  {
+    "weapon_key": "SERPENT357",
+    "display_name": "Serpent 357",
+    "spawn_id": "BPC_Weapon_Serpent357",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/Serpent_357",
+    "image_url": "https://scum.wiki.gg/images/AimPRO_Red_Dot_Sight.png?82db6f"
+  },
+  {
+    "weapon_key": "590A11",
+    "display_name": "TEC01 490",
+    "spawn_id": "BP_Weapon_590A11",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/TEC01_490",
+    "image_url": null
+  },
+  {
+    "weapon_key": "M9",
+    "display_name": "TEC01 M9",
+    "spawn_id": "BP_Weapon_M9",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/TEC01_M9",
+    "image_url": null
+  },
+  {
+    "weapon_key": "DT11BSAWEDOFF",
+    "display_name": "The Mule DT11B Short",
+    "spawn_id": "BPC_Weapon_DT11B_Sawed_Off",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/The_Mule_DT11B_Short",
+    "image_url": null
+  },
+  {
+    "weapon_key": "UMP45",
+    "display_name": "UMP-45",
+    "spawn_id": "BPC_Weapon_UMP45",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/UMP-45",
+    "image_url": "https://scum.wiki.gg/images/.45_ACP_Ammunition_Box.png?1eff7b"
+  },
+  {
+    "weapon_key": "VHS2RAIL",
+    "display_name": "VHS 2",
+    "spawn_id": "BP_Weapon_VHS2_Rail",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/VHS_2",
+    "image_url": null
+  },
+  {
+    "weapon_key": "VHS2",
+    "display_name": "VHS 2 CT",
+    "spawn_id": "BP_Weapon_VHS2",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/VHS_2_CT",
+    "image_url": null
+  },
+  {
+    "weapon_key": "VHSBG",
+    "display_name": "VHS BG",
+    "spawn_id": "BP_Weapon_VHS_BG",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/VHS_BG",
+    "image_url": null
+  },
+  {
+    "weapon_key": "VSSVZ",
+    "display_name": "VSS VZ",
+    "spawn_id": "BPC_Weapon_VSS_VZ",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/VSS_VZ",
+    "image_url": "https://scum.wiki.gg/images/ACOG.png?206903"
+  },
+  {
+    "weapon_key": "VIPERM357",
+    "display_name": "Viper M357",
+    "spawn_id": "BP_Weapon_Viper_M357",
+    "group": "Guns",
+    "page_url": "https://scum.wiki.gg/wiki/Viper_M357",
+    "image_url": "https://scum.wiki.gg/images/AimPRO_Red_Dot_Sight.png?82db6f"
+  },
+  {
+    "weapon_key": "2HAXE",
+    "display_name": "Axe",
+    "spawn_id": "2H_Axe",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Axe",
+    "image_url": "https://scum.wiki.gg/images/Axe.png?3cb709"
+  },
+  {
+    "weapon_key": "2HBASEBALLBAT",
+    "display_name": "Baseball Bat",
+    "spawn_id": "2H_Baseball_Bat",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Baseball_Bat",
+    "image_url": null
+  },
+  {
+    "weapon_key": "2HBASEBALLBATWITHSPIKES",
+    "display_name": "Baseball Bat With Nails",
+    "spawn_id": "2H_Baseball_Bat_with_spikes",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Baseball_Bat_With_Nails",
+    "image_url": "https://scum.wiki.gg/images/Baseball_Bat.png?bce95b"
+  },
+  {
+    "weapon_key": "1HPOLICEBATON",
+    "display_name": "Baton",
+    "spawn_id": "1H_Police_Baton",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Baton",
+    "image_url": null
+  },
+  {
+    "weapon_key": "1HDILDO",
+    "display_name": "Beamasaurus Dildo",
+    "spawn_id": "1H_Dildo",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Beamasaurus_Dildo",
+    "image_url": null
+  },
+  {
+    "weapon_key": "2HSTONEAXE",
+    "display_name": "Big Stone Axe",
+    "spawn_id": "2H_Stone_Axe",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Big_Stone_Axe",
+    "image_url": null
+  },
+  {
+    "weapon_key": "1HBRASSKNUCKLES",
+    "display_name": "Brass Knuckles",
+    "spawn_id": "1H_Brass_Knuckles",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Brass_Knuckles",
+    "image_url": "https://scum.wiki.gg/images/Brass_Knuckles.png?4d47d6"
+  },
+  {
+    "weapon_key": "1HBUSHMAN",
+    "display_name": "Bushman",
+    "spawn_id": "1H_Bushman",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Bushman",
+    "image_url": null
+  },
+  {
+    "weapon_key": "1HCLEAVER",
+    "display_name": "Cleaver",
+    "spawn_id": "1H_Cleaver",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Cleaver",
+    "image_url": null
+  },
+  {
+    "weapon_key": "1HCROWBAR",
+    "display_name": "Crowbar",
+    "spawn_id": "1H_Crowbar",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Crowbar",
+    "image_url": null
+  },
+  {
+    "weapon_key": "1HHUNTER",
+    "display_name": "Hunter",
+    "spawn_id": "1H_Hunter",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Hunter",
+    "image_url": null
+  },
+  {
+    "weapon_key": "1HIMPROVISEDHAMMER",
+    "display_name": "Improvised Hammer",
+    "spawn_id": "1H_Improvised_Hammer",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Improvised_Hammer",
+    "image_url": null
+  },
+  {
+    "weapon_key": "1HHATCHET",
+    "display_name": "Improvised Hatchet",
+    "spawn_id": "1H_Hatchet",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Improvised_Hatchet",
+    "image_url": "https://scum.wiki.gg/images/Bolts.png?4f224c"
+  },
+  {
+    "weapon_key": "IMPROVISEDMETALSPEAR",
+    "display_name": "Improvised Metal Spear",
+    "spawn_id": null,
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Improvised_Metal_Spear",
+    "image_url": "https://scum.wiki.gg/images/Improvised_Metal_Spear.png?8e3fff"
+  },
+  {
+    "weapon_key": "2HIMPROVISEDSHOVEL",
+    "display_name": "Improvised Shovel",
+    "spawn_id": "2H_Improvised_shovel",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Improvised_Shovel",
+    "image_url": null
+  },
+  {
+    "weapon_key": "IMPROVISEDSTONESPEAR",
+    "display_name": "Improvised Stone Spear",
+    "spawn_id": null,
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Improvised_Stone_Spear",
+    "image_url": null
+  },
+  {
+    "weapon_key": "IMPROVISEDWOODENSPEAR",
+    "display_name": "Improvised Wooden Spear",
+    "spawn_id": null,
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Improvised_Wooden_Spear",
+    "image_url": null
+  },
+  {
+    "weapon_key": "2HKATANA",
+    "display_name": "Katana",
+    "spawn_id": "2H_Katana",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Katana",
+    "image_url": null
+  },
+  {
+    "weapon_key": "1HKITCHENKNIFE",
+    "display_name": "Kitchen Knife",
+    "spawn_id": "1H_KitchenKnife",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Kitchen_Knife",
+    "image_url": null
+  },
+  {
+    "weapon_key": "1HKUNAI",
+    "display_name": "Kunai",
+    "spawn_id": "1H_Kunai",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Kunai",
+    "image_url": null
+  },
+  {
+    "weapon_key": "1HMK5000BLACK",
+    "display_name": "MK5000",
+    "spawn_id": "1H_MK5000_Black",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/MK5000",
+    "image_url": null
+  },
+  {
+    "weapon_key": "2HMETALAXE",
+    "display_name": "Metal Axe",
+    "spawn_id": "2H_Metal_Axe",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Metal_Axe",
+    "image_url": null
+  },
+  {
+    "weapon_key": "2HMETALBASEBALLBAT",
+    "display_name": "Metal Baseball Bat",
+    "spawn_id": "2H_Metal_Baseball_Bat",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Metal_Baseball_Bat",
+    "image_url": null
+  },
+  {
+    "weapon_key": "1HIMPROVISEDMETALKNIFE",
+    "display_name": "Metal Knife",
+    "spawn_id": "1H_Improvised_metal_Knife",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Metal_Knife",
+    "image_url": null
+  },
+  {
+    "weapon_key": "METALSAW",
+    "display_name": "Metal Saw",
+    "spawn_id": null,
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Metal_Saw",
+    "image_url": null
+  },
+  {
+    "weapon_key": "1HMETALSWORD",
+    "display_name": "Metal Sword",
+    "spawn_id": "1H_Metal_Sword",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Metal_Sword",
+    "image_url": null
+  },
+  {
+    "weapon_key": "1HN9BLACK",
+    "display_name": "N9 Bayonet",
+    "spawn_id": "1H_N9_Black",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/N9_Bayonet",
+    "image_url": null
+  },
+  {
+    "weapon_key": "2HPICKAXE",
+    "display_name": "Pickaxe",
+    "spawn_id": "2H_Pickaxe",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Pickaxe",
+    "image_url": null
+  },
+  {
+    "weapon_key": "2HPITCHFORK",
+    "display_name": "Pitchfork",
+    "spawn_id": "2H_Pitchfork",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Pitchfork",
+    "image_url": null
+  },
+  {
+    "weapon_key": "1HSCALPEL",
+    "display_name": "Scalpel",
+    "spawn_id": "1H_Scalpel",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Scalpel",
+    "image_url": "https://scum.wiki.gg/images/Scalpel.png?c6315e"
+  },
+  {
+    "weapon_key": "1HSCOUTBLACK",
+    "display_name": "Scout",
+    "spawn_id": "1H_Scout_Black",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Scout",
+    "image_url": null
+  },
+  {
+    "weapon_key": "2HSHOVEL02",
+    "display_name": "Shovel",
+    "spawn_id": "2H_Shovel_02",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Shovel",
+    "image_url": null
+  },
+  {
+    "weapon_key": "1HSHURIKEN",
+    "display_name": "Shuriken",
+    "spawn_id": "1H_Shuriken",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Shuriken",
+    "image_url": null
+  },
+  {
+    "weapon_key": "SKILLSMELEEWEAPONS",
+    "display_name": "Skills/Melee Weapons",
+    "spawn_id": null,
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Skills/Melee_Weapons",
+    "image_url": null
+  },
+  {
+    "weapon_key": "SLEDGEHAMMER",
+    "display_name": "Sledge Hammer",
+    "spawn_id": null,
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Sledge_Hammer",
+    "image_url": null
+  },
+  {
+    "weapon_key": "1HLITTLESPADE",
+    "display_name": "Small Spade",
+    "spawn_id": "1H_Little_Spade",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Small_Spade",
+    "image_url": null
+  },
+  {
+    "weapon_key": "2HSHOVEL01",
+    "display_name": "Spade Shovel",
+    "spawn_id": "2H_Shovel_01",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Spade_Shovel",
+    "image_url": "https://scum.wiki.gg/images/Anti-Personnel_Mine.png?f0fc15"
+  },
+  {
+    "weapon_key": "1HSTONEAXE",
+    "display_name": "Stone Axe",
+    "spawn_id": "1H_Stone_Axe",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Stone_Axe",
+    "image_url": null
+  },
+  {
+    "weapon_key": "1HIMPROVISEDKNIFE",
+    "display_name": "Stone Knife",
+    "spawn_id": "1H_ImprovisedKnife",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Stone_Knife",
+    "image_url": "https://scum.wiki.gg/images/Medium_Stone.png?dd5065"
+  },
+  {
+    "weapon_key": "2HBASEBALLBATWITHWIRE",
+    "display_name": "Wire Baseball Bat",
+    "spawn_id": "2H_Baseball_Bat_with_wire",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Wire_Baseball_Bat",
+    "image_url": "https://scum.wiki.gg/images/Barbed_Wire.png?4cac2f"
+  },
+  {
+    "weapon_key": "1HWOODENCLUBWITHWIRE",
+    "display_name": "Wire Wooden Club",
+    "spawn_id": "1H_Wooden_club_with_wire",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Wire_Wooden_Club",
+    "image_url": null
+  },
+  {
+    "weapon_key": "1HWOODENCLUB",
+    "display_name": "Wooden Club",
+    "spawn_id": "1H_Wooden_club",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Wooden_Club",
+    "image_url": null
+  },
+  {
+    "weapon_key": "1HWOODENCLUBWITHSPIKES",
+    "display_name": "Wooden Club With Nails",
+    "spawn_id": "1H_Wooden_club_with_spikes",
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Wooden_Club_With_Nails",
+    "image_url": null
+  },
+  {
+    "weapon_key": "WOODENSWORD",
+    "display_name": "Wooden Sword",
+    "spawn_id": null,
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Wooden_Sword",
+    "image_url": "https://scum.wiki.gg/images/Improvised_Rope.png?3bc8fa"
+  },
+  {
+    "weapon_key": "WRENCHPIPE",
+    "display_name": "Wrench Pipe",
+    "spawn_id": null,
+    "group": "Melee",
+    "page_url": "https://scum.wiki.gg/wiki/Wrench_Pipe",
+    "image_url": null
+  },
+  {
+    "weapon_key": "C4BOMB",
+    "display_name": "C4 Bomb",
+    "spawn_id": null,
+    "group": "Special",
+    "page_url": "https://scum.wiki.gg/wiki/C4_Bomb",
+    "image_url": "https://scum.wiki.gg/images/Blast_Cap.png?fffabb"
+  },
+  {
+    "weapon_key": "IMPROVISEDFLAMETHROWER",
+    "display_name": "Improvised Flamethrower",
+    "spawn_id": null,
+    "group": "Special",
+    "page_url": "https://scum.wiki.gg/wiki/Improvised_Flamethrower",
+    "image_url": null
+  },
+  {
+    "weapon_key": "DOUBLEBANGFIRECRACKER",
+    "display_name": "Double Bang Firecracker",
+    "spawn_id": null,
+    "group": "Throwables",
+    "page_url": "https://scum.wiki.gg/wiki/Double_Bang_Firecracker",
+    "image_url": null
+  },
+  {
+    "weapon_key": "M84STUNGRENADE",
+    "display_name": "M84 Stun Grenade",
+    "spawn_id": null,
+    "group": "Throwables",
+    "page_url": "https://scum.wiki.gg/wiki/M84_Stun_Grenade",
+    "image_url": null
+  },
+  {
+    "weapon_key": "TNT",
+    "display_name": "TNT",
+    "spawn_id": null,
+    "group": "Throwables",
+    "page_url": "https://scum.wiki.gg/wiki/TNT",
+    "image_url": null
+  },
+  {
+    "weapon_key": "TEARGASGRENADE",
+    "display_name": "Tear Gas Grenade",
+    "spawn_id": null,
+    "group": "Throwables",
+    "page_url": "https://scum.wiki.gg/wiki/Tear_Gas_Grenade",
+    "image_url": "https://scum.wiki.gg/images/TT_weight.png?cd59ed"
+  },
+  {
+    "weapon_key": "DT11BSAWEDOFF",
+    "display_name": "\"The Mule\" DT11B Short",
+    "spawn_id": "BPC_Weapon_DT11B_Sawed_Off",
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/%22The_Mule%22_DT11B_Short",
+    "image_url": null
+  },
+  {
+    "weapon_key": "ALLWEAPONS",
+    "display_name": "All Weapons",
+    "spawn_id": null,
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/All_Weapons",
+    "image_url": "https://scum.wiki.gg/images/ACOG.png?206903"
+  },
+  {
+    "weapon_key": "ANTIPERSONNELMINE",
+    "display_name": "Anti-Personnel Mine",
+    "spawn_id": null,
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Anti-Personnel_Mine",
+    "image_url": null
+  },
+  {
+    "weapon_key": "BARBEDSPIKETRAP",
+    "display_name": "Barbed Spike Trap",
+    "spawn_id": null,
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Barbed_Spike_Trap",
+    "image_url": null
+  },
+  {
+    "weapon_key": "1HPOLICEBATON",
+    "display_name": "Baton",
+    "spawn_id": "1H_Police_Baton",
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Baton",
+    "image_url": null
+  },
+  {
+    "weapon_key": "CLICK",
+    "display_name": "Block 21",
+    "spawn_id": "click",
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Block_21",
+    "image_url": null
+  },
+  {
+    "weapon_key": "CARTRIDGETRAP",
+    "display_name": "Cartridge Trap",
+    "spawn_id": null,
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Cartridge_Trap",
+    "image_url": null
+  },
+  {
+    "weapon_key": "CHAINSAW",
+    "display_name": "Chainsaw",
+    "spawn_id": null,
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Chainsaw",
+    "image_url": null
+  },
+  {
+    "weapon_key": "CLAYMORE",
+    "display_name": "Claymore",
+    "spawn_id": null,
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Claymore",
+    "image_url": null
+  },
+  {
+    "weapon_key": "CRUTCH",
+    "display_name": "Crutch",
+    "spawn_id": null,
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Crutch",
+    "image_url": null
+  },
+  {
+    "weapon_key": "CLICK",
+    "display_name": "DEagle .357",
+    "spawn_id": "click",
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/DEagle_.357",
+    "image_url": null
+  },
+  {
+    "weapon_key": "DEAGLE50GOLD",
+    "display_name": "DEagle 50",
+    "spawn_id": "Weapon_DEagle_50Gold",
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/DEagle_50",
+    "image_url": null
+  },
+  {
+    "weapon_key": "DANNYTREJOSMACHETE",
+    "display_name": "Danny Trejo's Machete",
+    "spawn_id": null,
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Danny_Trejo%27s_Machete",
+    "image_url": null
+  },
+  {
+    "weapon_key": "DILDOSPEAR",
+    "display_name": "Dildo Spear",
+    "spawn_id": null,
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Dildo_Spear",
+    "image_url": null
+  },
+  {
+    "weapon_key": "FACEROLLSFACESMASHER",
+    "display_name": "Facerolls Face Smasher",
+    "spawn_id": null,
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Facerolls_Face_Smasher",
+    "image_url": null
+  },
+  {
+    "weapon_key": "FIREWORKSTRAP",
+    "display_name": "Fireworks Trap",
+    "spawn_id": null,
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Fireworks_Trap",
+    "image_url": null
+  },
+  {
+    "weapon_key": "FLAREGUN",
+    "display_name": "Flare Gun",
+    "spawn_id": "BP_Weapon_FlareGun",
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Flare_Gun",
+    "image_url": null
+  },
+  {
+    "weapon_key": "FLARETRAP",
+    "display_name": "Flare Trap",
+    "spawn_id": null,
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Flare_Trap",
+    "image_url": null
+  },
+  {
+    "weapon_key": "1HFOOSTERMACHETE",
+    "display_name": "Foosters Machete",
+    "spawn_id": "1H_Fooster_Machete",
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Foosters_Machete",
+    "image_url": null
+  },
+  {
+    "weapon_key": "SF19",
+    "display_name": "HS SF19",
+    "spawn_id": "BP_Weapon_SF19",
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/HS_SF19",
+    "image_url": null
+  },
+  {
+    "weapon_key": "HS9",
+    "display_name": "HS-9",
+    "spawn_id": "BP_Weapon_HS9",
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/HS-9",
+    "image_url": null
+  },
+  {
+    "weapon_key": "HUNTER85V2",
+    "display_name": "Hunter85",
+    "spawn_id": "BP_Weapon_Hunter85_V2",
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Hunter85",
+    "image_url": null
+  },
+  {
+    "weapon_key": "IMPROVISEDBOW",
+    "display_name": "Improvised Bow",
+    "spawn_id": null,
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Improvised_Bow",
+    "image_url": "https://scum.wiki.gg/images/Improvised_Bow_20_Draw_Hold_Time.png?822193"
+  },
+  {
+    "weapon_key": "IMPROVISEDCLAYMORE",
+    "display_name": "Improvised Claymore",
+    "spawn_id": null,
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Improvised_Claymore",
+    "image_url": null
+  },
+  {
+    "weapon_key": "IMPROVISEDCROSSBOW",
+    "display_name": "Improvised Crossbow",
+    "spawn_id": "BP_Weapon_Improvised_Crossbow",
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Improvised_Crossbow",
+    "image_url": null
+  },
+  {
+    "weapon_key": "IMPROVISEDHANDGUN",
+    "display_name": "Improvised Handgun .50cal",
+    "spawn_id": "BP_Weapon_Improvised_Handgun",
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Improvised_Handgun_.50cal",
+    "image_url": "https://scum.wiki.gg/images/Bolts.png?4f224c"
+  },
+  {
+    "weapon_key": "2HIMPROVISEDMETALSHOVEL",
+    "display_name": "Improvised Metal Shovel",
+    "spawn_id": "2H_Improvised_metal_shovel",
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Improvised_Metal_Shovel",
+    "image_url": null
+  },
+  {
+    "weapon_key": "IMPROVISEDMINE",
+    "display_name": "Improvised Mine",
+    "spawn_id": null,
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Improvised_Mine",
+    "image_url": "https://scum.wiki.gg/images/Caramel_Soda.png?55f30a"
+  },
+  {
+    "weapon_key": "LASERDETONATOR",
+    "display_name": "Laser Detonator",
+    "spawn_id": null,
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Laser_Detonator",
+    "image_url": "https://scum.wiki.gg/images/Batteries.png?335631"
+  },
+  {
+    "weapon_key": "M1GARAND",
+    "display_name": "M1 Rifle",
+    "spawn_id": "BP_Weapon_M1_Garand",
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/M1_Rifle",
+    "image_url": null
+  },
+  {
+    "weapon_key": "M1911ENGRAVED",
+    "display_name": "M1911",
+    "spawn_id": "Weapon_M1911_Engraved",
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/M1911",
+    "image_url": null
+  },
+  {
+    "weapon_key": "MEDIEVALSWORD",
+    "display_name": "Medieval Sword",
+    "spawn_id": null,
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Medieval_Sword",
+    "image_url": null
+  },
+  {
+    "weapon_key": "MOTIONSENSORDETONATOR",
+    "display_name": "Motion Sensor Detonator",
+    "spawn_id": null,
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Motion_Sensor_Detonator",
+    "image_url": null
+  },
+  {
+    "weapon_key": "PROM1MINE",
+    "display_name": "PROM-1 Mine",
+    "spawn_id": null,
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/PROM-1_Mine",
+    "image_url": null
+  },
+  {
+    "weapon_key": "PIPEBOMB",
+    "display_name": "Pipe Bomb",
+    "spawn_id": null,
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Pipe_Bomb",
+    "image_url": null
+  },
+  {
+    "weapon_key": "PRESSURECOOKERBOMB",
+    "display_name": "Pressure Cooker Bomb",
+    "spawn_id": null,
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Pressure_Cooker_Bomb",
+    "image_url": null
+  },
+  {
+    "weapon_key": "SILENTALARM",
+    "display_name": "Silent alarm",
+    "spawn_id": null,
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Silent_alarm",
+    "image_url": null
+  },
+  {
+    "weapon_key": "SMALLANTIPERSONNELMINE",
+    "display_name": "Small Anti-Personnel Mine",
+    "spawn_id": null,
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Small_Anti-Personnel_Mine",
+    "image_url": null
+  },
+  {
+    "weapon_key": "SMALLAXE",
+    "display_name": "Small Axe",
+    "spawn_id": null,
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Small_Axe",
+    "image_url": "https://scum.wiki.gg/images/Small_Axe.png?7aa6da"
+  },
+  {
+    "weapon_key": "1HLITTLESPADE",
+    "display_name": "Small Spade",
+    "spawn_id": "1H_Little_Spade",
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Small_Spade",
+    "image_url": null
+  },
+  {
+    "weapon_key": "STAKEPIT",
+    "display_name": "Stake Pit",
+    "spawn_id": null,
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Stake_Pit",
+    "image_url": "https://scum.wiki.gg/images/Stake_Pit.png?f32cb0"
+  },
+  {
+    "weapon_key": "STAKEPIT",
+    "display_name": "Stake Pit",
+    "spawn_id": null,
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Stake_Pit",
+    "image_url": "https://scum.wiki.gg/images/Stake_Pit.png?f32cb0"
+  },
+  {
+    "weapon_key": "TRTUZAKLAR",
+    "display_name": "Tr:Tuzaklar",
+    "spawn_id": null,
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Tr:Tuzaklar",
+    "image_url": null
+  },
+  {
+    "weapon_key": "1HTRAYNORSAXE",
+    "display_name": "Traynor's Axe",
+    "spawn_id": "1H_Traynors_Axe",
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Traynor%27s_Axe",
+    "image_url": null
+  },
+  {
+    "weapon_key": "UMP45",
+    "display_name": "UMP-45",
+    "spawn_id": "BPC_Weapon_UMP45",
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/UMP-45",
+    "image_url": "https://scum.wiki.gg/images/.45_ACP_Ammunition_Box.png?1eff7b"
+  },
+  {
+    "weapon_key": "UPDATE030221",
+    "display_name": "Update 03-02-21",
+    "spawn_id": null,
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Update_03-02-21",
+    "image_url": null
+  },
+  {
+    "weapon_key": "UPDATE033121",
+    "display_name": "Update 03-31-21",
+    "spawn_id": null,
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Update_03-31-21",
+    "image_url": null
+  },
+  {
+    "weapon_key": "WATERMELON",
+    "display_name": "Update 06-25-20",
+    "spawn_id": "Watermelon",
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/Update_06-25-20",
+    "image_url": "https://scum.wiki.gg/images/Alarm_Traps.jpg?a89a1c"
+  },
+  {
+    "weapon_key": "VHS2RAIL",
+    "display_name": "VHS 2",
+    "spawn_id": "BP_Weapon_VHS2_Rail",
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/VHS_2",
+    "image_url": null
+  },
+  {
+    "weapon_key": "VHS2",
+    "display_name": "VHS 2 CT",
+    "spawn_id": "BP_Weapon_VHS2",
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/VHS_2_CT",
+    "image_url": null
+  },
+  {
+    "weapon_key": "VHSBG",
+    "display_name": "VHS BG",
+    "spawn_id": "BP_Weapon_VHS_BG",
+    "group": "Traps",
+    "page_url": "https://scum.wiki.gg/wiki/VHS_BG",
+    "image_url": null
+  }
+]

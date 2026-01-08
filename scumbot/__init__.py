@@ -1,0 +1,1 @@
+"""SCUMBot package."""
