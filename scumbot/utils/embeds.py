@@ -79,6 +79,8 @@ def create_scumbot_embed(
     bot: Optional[discord.Client] = None,
     server_location: Optional[str] = None,
     bot_settings: Optional[dict] = None,
+    set_thumbnail: bool = True,
+    url: str | None = None,
 ) -> discord.Embed:
     """Create an embed with SCUMBot defaults and footer applied."""
     if color is None:
