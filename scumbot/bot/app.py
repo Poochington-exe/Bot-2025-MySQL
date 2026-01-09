@@ -990,6 +990,147 @@ async def _fetch_battlemetrics_server(bm_id: str | None) -> dict | None:
     return await asyncio.to_thread(_do_request)
 
 # ==========================================================
+# Registration discord account linking
+# ==========================================================
+# ==========================================================
+# Registration notifier loop (DMs when linking completes)
+# ==========================================================
+
+async def notify_completed_links_and_cleanup(client: discord.Client, pool: aiomysql.Pool):
+    """
+    Background task that:
+      - finds pending_links rows with linked=1
+      - verifies final steam_id/username exists in player_statistics
+      - DMs users a confirmation embed (server-aware)
+      - deletes those pending_links rows to avoid reprocessing
+    """
+    await client.wait_until_ready()
+    logger.info("Registration notifier loop started.")
+
+    while not client.is_closed():
+        try:
+            async with pool.acquire() as conn:
+                async with conn.cursor(aiomysql.DictCursor) as cur:
+                    await cur.execute(
+                        """
+                        SELECT guild_id, discord_id
+                        FROM pending_links
+                        WHERE linked = 1
+                        LIMIT 20
+                        """
+                    )
+                    rows = await cur.fetchall()
+
+                if not rows:
+                    await asyncio.sleep(15)
+                    continue
+
+                for row in rows:
+                    guild_id = int(row.get("guild_id"))
+                    discord_id = int(row.get("discord_id"))
+
+                    # ---- Server basics (from cache) ----
+                    cfg = SERVER_SETTINGS.get(int(guild_id), {}) if isinstance(SERVER_SETTINGS, dict) else {}
+                    server_name = (cfg.get("server_name") or "Unknown Server").strip()
+                    if len(server_name) > 40:
+                        server_name = server_name[:37] + "..."
+                    server_ip = (cfg.get("server_ip") or "").strip() or "—"
+                    server_port = cfg.get("server_port")
+                    server_loc = (cfg.get("server_location") or cfg.get("location") or "").strip().upper() or "—"
+
+                    def _add_ip_port_loc_fields(e: discord.Embed) -> None:
+                        e.add_field(name="IP", value=server_ip, inline=True)
+                        e.add_field(name="Port", value=str(server_port) if server_port else "—", inline=True)
+                        e.add_field(name="Location", value=server_loc, inline=True)
+
+                    # Look up latest stats row to confirm linkage exists
+                    async with conn.cursor(aiomysql.DictCursor) as cur_stats:
+                        await cur_stats.execute(
+                            """
+                            SELECT steam_id, username
+                            FROM player_statistics
+                            WHERE guild_id = %s AND discord_id = %s
+                            LIMIT 1
+                            """,
+                            (guild_id, discord_id),
+                        )
+                        ps = await cur_stats.fetchone()
+
+                    # If parser marked linked but stats row isn't there yet, don't delete the pending row.
+                    # Just retry next cycle.
+                    if not ps:
+                        logger.info(
+                            "Registration notifier: linked=1 but no player_statistics yet (guild_id=%s, discord_id=%s). Will retry.",
+                            guild_id, discord_id
+                        )
+                        continue
+
+                    steam_id = ps.get("steam_id")
+                    username = ps.get("username")
+
+                    # Fetch the user to DM
+                    try:
+                        user = await client.fetch_user(discord_id)
+                    except Exception:
+                        logger.warning(
+                            "Registration notifier: could not fetch user (guild_id=%s, discord_id=%s). Deleting pending_links to avoid loop.",
+                            guild_id, discord_id
+                        )
+                        async with conn.cursor() as cur_del:
+                            await cur_del.execute(
+                                "DELETE FROM pending_links WHERE guild_id=%s AND discord_id=%s",
+                                (guild_id, discord_id),
+                            )
+                            await conn.commit()
+                        continue
+
+                    # Build DM embed (server-aware)
+                    embed = create_scumbot_embed(
+                        guild_id=guild_id,
+                        title=f"Registration Complete — {server_name}",
+                        description="Your Discord account is now linked to your SCUM profile on this server.",
+                        server_context=True,
+                    )
+                    _add_ip_port_loc_fields(embed)
+
+                    # Optional: show in-game name / steam id (useful confirmation)
+                    if username:
+                        embed.add_field(name="In-game Name", value=username, inline=True)
+                    if steam_id:
+                        embed.add_field(name="Steam ID", value=str(steam_id), inline=True)
+
+                    try:
+                        await user.send(embed=embed)
+                        logger.info(
+                            "Registration complete DM sent (guild_id=%s, discord_id=%s, server=%s)",
+                            guild_id, discord_id, server_name
+                        )
+                    except discord.Forbidden:
+                        logger.warning(
+                            "Registration notifier: DMs disabled (guild_id=%s, discord_id=%s, server=%s)",
+                            guild_id, discord_id, server_name
+                        )
+                    except Exception:
+                        logger.exception(
+                            "Registration notifier: DM send failed (guild_id=%s, discord_id=%s, server=%s)",
+                            guild_id, discord_id, server_name
+                        )
+
+                    # Delete pending link after processing (whether DM succeeded or not)
+                    async with conn.cursor() as cur_del:
+                        await cur_del.execute(
+                            "DELETE FROM pending_links WHERE guild_id=%s AND discord_id=%s",
+                            (guild_id, discord_id),
+                        )
+                        await conn.commit()
+
+            await asyncio.sleep(15)
+
+        except Exception:
+            logger.exception("notify_completed_links_and_cleanup loop error")
+            await asyncio.sleep(30)
+
+# ==========================================================
 # Flag / visual helpers
 # ==========================================================
 
@@ -3212,6 +3353,20 @@ async def register_command(interaction: discord.Interaction):
     guild_id = interaction.guild_id
     discord_id = interaction.user.id
 
+    # ---- Server basics (from cache, used for titles/fields everywhere) ----
+    cfg = SERVER_SETTINGS.get(int(guild_id), {}) if isinstance(SERVER_SETTINGS, dict) else {}
+    server_name = (cfg.get("server_name") or (interaction.guild.name if interaction.guild else "Unknown Server")).strip()
+    if len(server_name) > 40:
+        server_name = server_name[:37] + "..."
+    server_ip = (cfg.get("server_ip") or "").strip() or "—"
+    server_port = cfg.get("server_port")
+    server_loc = (cfg.get("server_location") or cfg.get("location") or "").strip().upper() or "—"
+
+    def _add_ip_port_loc_fields(e: discord.Embed) -> None:
+        e.add_field(name="IP", value=server_ip, inline=True)
+        e.add_field(name="Port", value=str(server_port) if server_port else "—", inline=True)
+        e.add_field(name="Location", value=server_loc, inline=True)
+
     # 1) Check if this Discord user is already linked in this guild
     try:
         async with db_pool.acquire() as conn:
@@ -3228,8 +3383,8 @@ async def register_command(interaction: discord.Interaction):
                 linked_row = await cur.fetchone()
 
         if linked_row:
-            steam_id = linked_row["steam_id"]
-            username = linked_row["username"]
+            steam_id = linked_row.get("steam_id")
+            username = linked_row.get("username")
 
             desc_lines = ["You are already linked to your SCUM profile on this server."]
             if username or steam_id:
@@ -3242,15 +3397,17 @@ async def register_command(interaction: discord.Interaction):
 
             embed = create_scumbot_embed(
                 guild_id=guild_id,
-                title="Already Registered",
+                title=f"Already Registered — {server_name}",
                 description="\n".join(desc_lines),
                 server_context=True,
             )
+            _add_ip_port_loc_fields(embed)
+
             await interaction.response.send_message(embed=embed, ephemeral=True)
             return
 
-    except Exception as e:
-        print(f"[ERROR] /register link-check failed: {e}")
+    except Exception:
+        logger.exception("/register link-check failed (guild_id=%s, discord_id=%s)", guild_id, discord_id)
         # continue; worst case we treat them as unlinked
 
     # 2) Check for an existing pending registration code
@@ -3271,17 +3428,17 @@ async def register_command(interaction: discord.Interaction):
                 pending = await cur.fetchone()
 
         if pending:
-            code = pending["code"]
-            pending_linked_flag = pending["linked"]
+            code = pending.get("code")
+            pending_linked_flag = int(pending.get("linked") or 0)
 
-    except Exception as e:
-        print(f"[ERROR] /register pending-check failed: {e}")
+    except Exception:
+        logger.exception("/register pending-check failed (guild_id=%s, discord_id=%s)", guild_id, discord_id)
 
     # If parser already marked this as linked, inform the user
     if code and pending_linked_flag:
         embed = create_scumbot_embed(
             guild_id=guild_id,
-            title="Registration In Progress",
+            title=f"Registration In Progress — {server_name}",
             description=(
                 "Your registration code has already been detected in-game.\n"
                 "If you haven't received a confirmation DM yet, please wait a few moments "
@@ -3289,29 +3446,43 @@ async def register_command(interaction: discord.Interaction):
             ),
             server_context=True,
         )
+        _add_ip_port_loc_fields(embed)
+
         await interaction.response.send_message(embed=embed, ephemeral=True)
         return
 
     # 3) If no pending code, generate a brand new one
     if not code:
         alphabet = string.ascii_uppercase + string.digits
-        code = "SCUMBot-" + "".join(secrets.choice(alphabet) for _ in range(6)) + "-" + "".join(
-            secrets.choice(alphabet) for _ in range(6)
+        code = (
+            "SCUMBot-"
+            + "".join(secrets.choice(alphabet) for _ in range(6))
+            + "-"
+            + "".join(secrets.choice(alphabet) for _ in range(6))
         )
 
     # 4) Upsert/refresh pending_links with this code (linked=0)
     try:
         await execute(
             """
-            INSERT INTO pending_links (guild_id, discord_id, code, created_at, linked)
-            VALUES (%s,%s,%s,NOW(),0)
+            INSERT INTO pending_links (
+                guild_id,
+                discord_id,
+                discord_name,
+                code,
+                created_at,
+                linked
+            )
+            VALUES (%s, %s, %s, %s, NOW(), 0)
             ON DUPLICATE KEY UPDATE
-              code       = VALUES(code),
-              created_at = VALUES(created_at),
-              linked     = 0
+                discord_name = VALUES(discord_name),
+                code         = VALUES(code),
+                created_at   = VALUES(created_at),
+                linked       = 0
             """,
             guild_id,
             discord_id,
+            interaction.user.display_name or interaction.user.name,
             code,
         )
 
@@ -3321,17 +3492,18 @@ async def register_command(interaction: discord.Interaction):
             dm = await interaction.user.create_dm()
             dm_embed = create_scumbot_embed(
                 guild_id=guild_id,
-                title="Registration Instructions - ",
+                title=f"Registration Instructions — {server_name}",
                 description=(
                     "To link your Discord to your in-game SCUM profile:\n"
                     "1️⃣ Join your SCUM server connected to this Discord.\n"
-                    "2️⃣ Type the following code below into the server **chat**\n"
-                    "3️⃣ Wait patiently for another DM confirming your account has been linked.\n\n"
+                    "2️⃣ Type the code below into the server **chat**.\n"
+                    "3️⃣ Wait for a final DM confirming your account has been linked.\n\n"
                     f"```{code}```\n"
                 ),
-                # DM context → don't show server location in footer
-                server_context=False,
+                server_context=True,
             )
+            _add_ip_port_loc_fields(dm_embed)
+
             await dm.send(embed=dm_embed)
             sent_dm = True
         except discord.Forbidden:
@@ -3340,7 +3512,7 @@ async def register_command(interaction: discord.Interaction):
         if sent_dm:
             embed = create_scumbot_embed(
                 guild_id=guild_id,
-                title="Registration Code Sent",
+                title=f"Registration Code Sent — {server_name}",
                 description=(
                     "I've sent you a DM with your registration code.\n"
                     "Check your Discord DMs and follow the instructions."
@@ -3350,26 +3522,29 @@ async def register_command(interaction: discord.Interaction):
         else:
             embed = create_scumbot_embed(
                 guild_id=guild_id,
-                title="Registration Code",
+                title=f"Registration Code — {server_name}",
                 description=(
                     "I couldn't DM you (DMs disabled?).\n\n"
-                    "Use this code in **GLOBAL chat** on the SCUM server:\n"
+                    "Use this code in the server **chat** on the SCUM server:\n"
                     f"```{code}```\n"
                     "Once the parser sees it, your Discord will be linked."
                 ),
                 server_context=True,
             )
 
+        _add_ip_port_loc_fields(embed)
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
-    except Exception as e:
-        print(f"[ERROR] /register failed: {e}")
+    except Exception:
+        logger.exception("/register failed (guild_id=%s, discord_id=%s)", guild_id, discord_id)
         error_embed = create_scumbot_embed(
             guild_id=guild_id,
-            title="Registration Error",
+            title=f"Registration Error — {server_name}",
             description="Something went wrong while generating your registration code. Please try again later.",
             server_context=True,
         )
+        _add_ip_port_loc_fields(error_embed)
+
         if interaction.response.is_done():
             await interaction.followup.send(embed=error_embed, ephemeral=True)
         else:
@@ -3535,7 +3710,7 @@ async def on_ready():
 
     # Use one consistent task creation method and keep references
     client._background_tasks.append(client.loop.create_task(run_updater_loop(client, db_pool)))
-    # client._background_tasks.append(client.loop.create_task(notify_completed_links_and_cleanup(client, db_pool)))
+    client._background_tasks.append(client.loop.create_task(notify_completed_links_and_cleanup(client, db_pool)))
     client._background_tasks.append(client.loop.create_task(security_monitor_dispatcher(client, db_pool)))
     client._background_tasks.append(client.loop.create_task(update_bot_status(client, db_pool)))
     client._background_tasks.append(client.loop.create_task(admin_track_dispatcher(client, db_pool)))
