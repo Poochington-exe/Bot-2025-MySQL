@@ -13,18 +13,18 @@
 #   - Add __main__ runner (client.run)
 # ==========================================================
 
-import asyncio
 import logging
-import math
 import os
 import re
 import secrets
 import string
 from datetime import datetime, timedelta, timezone
+from zoneinfo import ZoneInfo
 
+import asyncio
+import discord
 import aiomysql
 import discord
-import requests
 from discord import app_commands
 from discord.ext import commands
 
@@ -62,6 +62,11 @@ db_pool: aiomysql.Pool | None = None
 
 CHANNEL_ID_RE = re.compile(r"\d+")
 LAST_ADMIN_TRACK_ID: dict[int, int] = {}
+
+# restart_key format: "YYYY-MM-DDTHH:MM" in the configured timezone
+_RESTART_SENT: dict[int, dict[str, set[int]]] = {}
+RESTART_THRESHOLDS_MIN = (10, 5, 0) #rminutes before restart to post the restart warning.
+RESTART_GRACE_SECONDS = 60  # Buffer either side of the hour incase the loop douesnt fall on the hour for the warnings.
 
 # ==========================================================
 # Bounty helpers (WANTED role + target resolver + slash modal)
@@ -581,50 +586,55 @@ async def load_server_settings():
             loc = (row.get("server_location") or None)
 
             new_settings[gid] = {
+                # ---- Canonical DB keys (preferred everywhere) ----
                 "guild_id": gid,
+                "server_name": row.get("server_name", ""),
+                "server_description": row.get("server_description", ""),
+                "server_ip": row.get("server_ip"),
+                "server_port": row.get("server_port"),
+                "server_id": row.get("server_id", ""),  # BattleMetrics ID or URL
+                "server_location": loc,
+                "discord_link": row.get("discord_link", ""),
+                "server_owner": row.get("server_owner"),
+
+                # ---- Legacy aliases (keep older code safe during transition) ----
                 "name": row.get("server_name", ""),
                 "description": row.get("server_description", ""),
-                "id": row.get("server_id", ""),  # BattleMetrics ID or URL
+                "id": row.get("server_id", ""),
+                "location": loc,  # you already use this as canonical in other places
 
-                # Canonical + alias (keeps older code safe)
-                "server_location": loc,
-
-                "discord_link": row.get("discord_link", ""),
-
+                # ---- Existing toggles/channels (unchanged) ----
                 "post_chats": row.get("post_chats", 1),
                 "post_logins": row.get("post_logins", 1),
                 "post_kills": row.get("post_kills", 1),
-
                 "chat_channel": row.get("chat_channel"),
                 "logins_channel": row.get("logins_channel"),
                 "kill_channel": row.get("kill_channel"),
-
                 "post_admin": row.get("post_admin", 0),
                 "admin_channel": row.get("admin_channel"),
-
                 "post_steam_ban": row.get("post_steam_ban", 0),
                 "steam_ban_channel": row.get("steam_ban_channel"),
-
                 "post_bounties": row.get("post_bounties", 0),
                 "bounty_channel": row.get("bounty_channel"),
                 "bounty_message": row.get("bounty_message"),
-
                 "post_sentries": row.get("post_sentries", 0),
                 "sentry_channel": row.get("sentry_channel"),
-
                 "post_pvp_board": row.get("post_pvp_board", 0),
                 "pvp_channel": row.get("pvp_channel"),
                 "pvp_period": row.get("pvp_period"),
                 "pvp_prize": row.get("pvp_prize"),
                 "pvp_payout": row.get("pvp_payout"),
                 "pvp_message": row.get("pvp_message"),
-
                 "post_leaderboard": row.get("post_leaderboard", 0),
                 "leaderboard_channel": row.get("leaderboard_channel"),
                 "leaderboard_message": row.get("leaderboard_message"),
-
-                "owner": row.get("server_owner"),
                 "track_admin": row.get("track_admin", 0),
+
+                # Add these too since they’re in your schema (optional but recommended)
+                "post_restarts": row.get("post_restarts", 0),
+                "restart_channel": row.get("restart_channel"),
+                "restart_schedule": row.get("restart_schedule"),
+                "restart_timezone": row.get("restart_timezone"),
             }
 
         SERVER_SETTINGS = new_settings
@@ -644,17 +654,284 @@ async def load_server_settings():
 # ==========================================================
 
 import asyncio
-import math
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 
 import discord
 import requests
 
 
-# --------------------------
-# Helpers (as per your style)
-# --------------------------
+#===================================================================
+#                Restart warning helpers + poster
+#===================================================================
+def _parse_restart_schedule(schedule_text: str):
+    """
+    Supported formats:
+      - 'HH:MM,HH:MM,...'
+      - 'hourly' (top of the hour)
+    Returns:
+      ('hourly', None) OR ('times', [(h, m), ...]) OR (None, None)
+    """
+    if not schedule_text:
+        return None, None
 
+    schedule_text = schedule_text.strip().lower()
+
+    if schedule_text == "hourly":
+        return "hourly", None
+
+    times = set()
+    for part in schedule_text.split(","):
+        part = part.strip()
+        if not part:
+            continue
+        try:
+            h, m = map(int, part.split(":"))
+            if 0 <= h <= 23 and 0 <= m <= 59:
+                times.add((h, m))
+        except Exception:
+            continue
+
+    return ("times", sorted(times)) if times else (None, None)
+
+
+
+def _get_tz(tz_name: str | None):
+    try:
+        return ZoneInfo(tz_name) if tz_name else timezone.utc
+    except Exception:
+        return timezone.utc
+
+
+def _next_restart_local(now_utc: datetime, schedule_text: str, tz_name: str) -> datetime | None:
+    """
+    Returns the next scheduled restart as a tz-aware datetime in tz_name.
+    Supports:
+      - "HH:MM,HH:MM,..." (explicit times)
+      - "hourly" (top of every hour)
+    """
+    schedule_text = (schedule_text or "").strip()
+    if not schedule_text:
+        return None
+
+    tz = _get_tz(tz_name)
+    now_local = now_utc.astimezone(tz)
+
+    # Special mode: hourly at HH:00
+    if schedule_text.lower() == "hourly":
+        # Next top-of-hour
+        next_hour = (now_local.replace(minute=0, second=0, microsecond=0) + timedelta(hours=1))
+        return next_hour
+
+    # Explicit HH:MM list
+    times = _parse_restart_schedule(schedule_text)
+    if not times:
+        return None
+
+    today = now_local.date()
+
+    candidates: list[datetime] = []
+    for day_offset in (0, 1):
+        d = today + timedelta(days=day_offset)
+        for (h, m) in times:
+            candidates.append(datetime(d.year, d.month, d.day, h, m, tzinfo=tz))
+
+    future = [c for c in candidates if c > now_local]
+    return min(future) if future else None
+
+
+def _restart_message(threshold_min: int) -> str:
+    """
+    Returns SCUM-themed message for 10, 5, 0.
+    Keep it funny but clear.
+    """
+    if threshold_min == 10:
+        return (
+            "```text\n"
+            "Restart in 10 minutes.\n"
+            "Stash your loot, park the ride, and get somewhere safe.\n"
+            "The bunker’s about to reboot — and yes, fresh loot will be waiting when we’re back.\n"
+            "```"
+        )
+    if threshold_min == 5:
+        return (
+            "```text\n"
+            "5 minutes to restart.\n"
+            "Final chance to secure your kit. Don’t log out in the open unless you enjoy donating gear to the wilderness.\n"
+            "```"
+        )
+    # threshold_min == 0
+    return (
+        "```text\n"
+        "Restarting now.\n"
+        "If you’re still outside, may the SCUM gods be kind. Back shortly — go get that fresh spawn loot.\n"
+        "```"
+    )
+
+
+async def restart_warning_dispatcher(client):
+    await client.wait_until_ready()
+    logger.info("Restart warning dispatcher started.")
+
+    while not client.is_closed():
+        try:
+            now_utc = datetime.now(timezone.utc)
+
+            for guild in client.guilds:
+                settings = SERVER_SETTINGS.get(guild.id)
+                if not settings or int(settings.get("post_restarts") or 0) != 1:
+                    continue
+
+                channel_id = settings.get("restart_channel")
+                schedule = settings.get("restart_schedule")
+                tz_name = settings.get("restart_timezone") or "UTC"
+
+                if not channel_id or not schedule:
+                    continue
+
+                try:
+                    channel_id = int(channel_id)
+                except Exception:
+                    continue
+
+                prev_rst, next_rst = _resolve_restart_times(now_utc, schedule, tz_name)
+                tz = _get_tz(tz_name)
+                now_local = now_utc.astimezone(tz)
+
+                threshold = None
+                restart_time = None
+
+                # --- T-0 (grace window, cannot be missed)
+                if prev_rst:
+                    delta = (now_local - prev_rst).total_seconds()
+                    if 0 <= delta <= RESTART_GRACE_SECONDS:
+                        threshold = 0
+                        restart_time = prev_rst
+
+                # --- T-10 / T-5
+                if threshold is None and next_rst:
+                    mins = int((next_rst - now_local).total_seconds() // 60)
+                    if mins == 10:
+                        threshold = 10
+                        restart_time = next_rst
+                    elif mins == 5:
+                        threshold = 5
+                        restart_time = next_rst
+
+                if threshold is None:
+                    continue
+
+                restart_key = restart_time.strftime("%Y-%m-%dT%H:%M")
+                sent = _RESTART_SENT.setdefault(guild.id, {}).setdefault(restart_key, set())
+                if threshold in sent:
+                    continue
+
+                channel = client.get_channel(channel_id)
+                if not channel:
+                    try:
+                        channel = await client.fetch_channel(channel_id)
+                    except Exception:
+                        continue
+
+                server_name = settings.get("server_name") or guild.name
+                server_location = settings.get("server_location") or settings.get("location")
+
+                if threshold == 10:
+                    msg = (
+                        "```text\n"
+                        "Restart in 10 minutes.\n"
+                        "Stash your loot, park the ride, and get somewhere safe.\n"
+                        "Fresh loot will be waiting once the bunker wakes back up.\n"
+                        "```"
+                    )
+                elif threshold == 5:
+                    msg = (
+                        "```text\n"
+                        "5 minutes to restart.\n"
+                        "Final warning — log somewhere sensible unless you enjoy donating gear.\n"
+                        "```"
+                    )
+                else:
+                    msg = (
+                        "```text\n"
+                        "Restarting now.\n"
+                        "If you’re still outside, may the SCUM gods be kind.\n"
+                        "```"
+                    )
+
+                embed = utils_create_scumbot_embed(
+                    title=f"Restart Warning — {server_name}",
+                    description=msg,
+                    bot=client,
+                    server_location=server_location,
+                    bot_settings=BOT_SETTINGS,
+                )
+
+                embed.add_field(name="Restart Time", value=restart_time.strftime("%H:%M"), inline=True)
+                embed.add_field(name="Time Zone", value=tz_name, inline=True)
+                embed.add_field(
+                    name="Restarting In",
+                    value="Now" if threshold == 0 else f"{threshold} minutes",
+                    inline=True,
+                )
+
+                await channel.send(embed=embed)
+                sent.add(threshold)
+
+                logger.info(
+                    "Restart warning sent (guild=%s/%s, t_minus=%s)",
+                    guild.name,
+                    guild.id,
+                    threshold,
+                )
+
+                # keep memory bounded
+                if len(_RESTART_SENT[guild.id]) > 5:
+                    for k in sorted(_RESTART_SENT[guild.id])[:-5]:
+                        _RESTART_SENT[guild.id].pop(k, None)
+
+        except Exception as e:
+            logger.error("[RESTART] Dispatcher error: %s", e)
+
+        await asyncio.sleep(20)
+
+def _resolve_restart_times(now_utc: datetime, schedule_text: str, tz_name: str):
+    """
+    Returns:
+      (previous_restart_local, next_restart_local)
+    Both tz-aware.
+    """
+    mode, times = _parse_restart_schedule(schedule_text)
+    if not mode:
+        return None, None
+
+    tz = _get_tz(tz_name)
+    now_local = now_utc.astimezone(tz)
+
+    candidates = []
+
+    if mode == "hourly":
+        base = now_local.replace(minute=0, second=0, microsecond=0)
+        candidates = [
+            base - timedelta(hours=1),
+            base,
+            base + timedelta(hours=1),
+        ]
+    else:
+        today = now_local.date()
+        for day_offset in (-1, 0, 1):
+            d = today + timedelta(days=day_offset)
+            for h, m in times:
+                candidates.append(datetime(d.year, d.month, d.day, h, m, tzinfo=tz))
+
+    candidates.sort()
+    prev = max((c for c in candidates if c <= now_local), default=None)
+    nxt = min((c for c in candidates if c > now_local), default=None)
+
+    return prev, nxt
+
+#===================================================================
+#                       BATTLEMETRICS HELPERS
+#===================================================================
 def _fmt_int(v) -> str:
     try:
         return f"{int(v)}"
@@ -711,101 +988,6 @@ async def _fetch_battlemetrics_server(bm_id: str | None) -> dict | None:
         return r.json()
 
     return await asyncio.to_thread(_do_request)
-
-
-def _parse_schedule_times(schedule_text: str) -> list[tuple[int, int]]:
-    """
-    restart_schedule expected formats (examples):
-      "06:00, 12:00, 18:00, 00:00"
-      "06:00"
-    Returns list of (hour, minute).
-    """
-    out: list[tuple[int, int]] = []
-    if not schedule_text:
-        return out
-
-    parts = [p.strip() for p in str(schedule_text).split(",") if p.strip()]
-    for p in parts:
-        try:
-            hh, mm = p.split(":")
-            h = int(hh)
-            m = int(mm)
-            if 0 <= h <= 23 and 0 <= m <= 59:
-                out.append((h, m))
-        except Exception:
-            continue
-    # unique + sorted
-    out = sorted(list(set(out)))
-    return out
-
-
-def _next_scheduled_restart(now_utc: datetime, schedule_text: str, tz_name: str | None) -> tuple[str, str, str]:
-    """
-    Returns:
-      schedule_display, next_restart_display, tz_display
-    """
-    schedule_text = (schedule_text or "").strip()
-    if not schedule_text:
-        return "—", "—", (tz_name or "UTC")
-
-    tz = None
-    tz_display = tz_name or "UTC"
-    try:
-        tz = ZoneInfo(tz_name) if tz_name else timezone.utc
-    except Exception:
-        tz = timezone.utc
-        tz_display = "UTC"
-
-    times = _parse_schedule_times(schedule_text)
-    if not times:
-        return schedule_text, "—", tz_display
-
-    # Convert now into target tz
-    now_local = now_utc.astimezone(tz)
-    today = now_local.date()
-
-    # Build candidate datetimes (today and tomorrow) and pick nearest future
-    candidates: list[datetime] = []
-    for day_offset in (0, 1):
-        d = today + timedelta(days=day_offset)
-        for (h, m) in times:
-            candidates.append(datetime(d.year, d.month, d.day, h, m, tzinfo=tz))
-
-    future = [c for c in candidates if c > now_local]
-    if not future:
-        return schedule_text, "—", tz_display
-
-    nxt_local = min(future)
-    remaining = int((nxt_local - now_local).total_seconds())
-    if remaining < 0:
-        remaining = 0
-
-    # Render: "in 2h 14m" style
-    hrs = remaining // 3600
-    mins = (remaining % 3600) // 60
-    next_txt = f"in {hrs}h {mins}m"
-
-    return schedule_text, next_txt, tz_display
-
-
-async def _get_server_settings_for_guild(guild_id: int) -> dict | None:
-    """
-    Prefer in-memory cache. Fallback to DB with DictCursor so keys are stable.
-    """
-    settings = SERVER_SETTINGS.get(guild_id) if isinstance(SERVER_SETTINGS, dict) else None
-    if settings:
-        return settings
-
-    # DB fallback (DictCursor ensures dict row)
-    try:
-        async with db_pool.acquire() as conn:
-            async with conn.cursor(DictCursor) as cur:
-                await cur.execute("SELECT * FROM server_settings WHERE guild_id=%s", (guild_id,))
-                row = await cur.fetchone()
-                return row if isinstance(row, dict) else None
-    except Exception:
-        return None
-
 
 # ==========================================================
 # Flag / visual helpers
@@ -1672,7 +1854,7 @@ async def server_command(interaction: discord.Interaction):
         return
 
     guild_id = interaction.guild.id
-    settings = await _get_server_settings_for_guild(guild_id)
+    settings = settings = SERVER_SETTINGS.get(guild_id)
 
     if not settings:
         await interaction.followup.send("This server is not configured yet. Run `/setup` first.", ephemeral=True)
@@ -1697,9 +1879,30 @@ async def server_command(interaction: discord.Interaction):
     restart_timezone = (settings.get("restart_timezone") or "UTC").strip()
 
     if post_restarts and restart_schedule:
-        schedule_disp, next_restart_disp, tz_disp = _next_scheduled_restart(now_utc, restart_schedule, restart_timezone)
+        tz_disp = restart_timezone or "UTC"
+
+        prev_rst, next_rst = _resolve_restart_times(
+            now_utc,
+            restart_schedule,
+            tz_disp,
+        )
+
+        schedule_disp = restart_schedule
+
+        if next_rst:
+            now_local = now_utc.astimezone(_get_tz(tz_disp))
+            mins_remaining = int((next_rst - now_local).total_seconds() // 60)
+
+            if mins_remaining >= 0:
+                next_restart_disp = f"in {mins_remaining} min"
+            else:
+                next_restart_disp = "imminent"
+        else:
+            next_restart_disp = "—"
     else:
-        schedule_disp, next_restart_disp, tz_disp = "—", "—", (restart_timezone or "UTC")
+        schedule_disp = "—"
+        next_restart_disp = "—"
+        tz_disp = restart_timezone or "UTC"
 
     # BattleMetrics API fetch
     bm = await _fetch_battlemetrics_server(bm_id) if bm_id else None
@@ -1726,9 +1929,8 @@ async def server_command(interaction: discord.Interaction):
             max_players = attrs.get("maxPlayers")
             rank = attrs.get("rank")
 
-            details = attrs.get("details", {}) or {}
-            ip = details.get("ip")
-            port = details.get("port")
+            ip = settings.get("server_ip")
+            port = settings.get("server_port")
 
             updated_at = attrs.get("updatedAt")
             if updated_at:
@@ -1744,9 +1946,6 @@ async def server_command(interaction: discord.Interaction):
     desc_lines = []
     desc_lines.append(f"```text\n{server_desc or 'No description set.'}\n```")
 
-    if discord_link:
-        desc_lines.append(f"Discord: {discord_link}")
-
     if bm_url:
         desc_lines.append(f"[View on BattleMetrics]({bm_url})")
 
@@ -1756,12 +1955,11 @@ async def server_command(interaction: discord.Interaction):
         bot=interaction.client,
         server_location=server_location,
         bot_settings=BOT_SETTINGS,
-        url=bm_url,              # makes title clickable (your factory now supports url)
         set_thumbnail=True,      # keeps consistent SCUMBot look (your factory now supports this)
     )
 
     # Row 1 (3 inline)
-    embed.add_field(name="Status", value=status, inline=True)
+    embed.add_field(name="Status", value=status.upper(), inline=True)
     embed.add_field(name="Players", value=_fmt_players(players, max_players), inline=True)
     embed.add_field(name="Location", value=(server_location or "—"), inline=True)
 
@@ -1771,17 +1969,45 @@ async def server_command(interaction: discord.Interaction):
     embed.add_field(name="Port", value=_fmt_int(port), inline=True)
 
     # Row 3 (3 inline)
-    embed.add_field(name="Restarts", value=schedule_disp, inline=True)
-    embed.add_field(name="Next Restart", value=next_restart_disp, inline=True)
-    embed.add_field(name="Updated", value=updated, inline=True)
+    schedule_text = settings.get("restart_schedule")
+    tz_name = settings.get("restart_timezone") or "UTC"
+
+    if post_restarts and schedule_text:
+        prev_rst, next_rst = _resolve_restart_times(
+            datetime.now(timezone.utc),
+            schedule_text,
+            tz_name,
+        )
+
+        if next_rst:
+            restart_time_disp = next_rst.strftime("%H:%M")
+            now_local = datetime.now(timezone.utc).astimezone(_get_tz(tz_name))
+            mins_remaining = int((next_rst - now_local).total_seconds() // 60)
+
+            if mins_remaining >= 0:
+                next_restart_disp = f"in {mins_remaining} min"
+            else:
+                next_restart_disp = "imminent"
+        else:
+            restart_time_disp = "—"
+            next_restart_disp = "—"
+
+        embed.add_field(name="Restarts", value=schedule_text, inline=True)
+        embed.add_field(name="Next Restart", value=next_restart_disp, inline=True)
+        embed.add_field(name="Restart Timezone", value=tz_name, inline=True)
+    else:
+        embed.add_field(name="Restarts", value="—", inline=True)
+        embed.add_field(name="Next Restart", value="—", inline=True)
+        embed.add_field(name="Restart Timezone", value="—", inline=True)
+
+
+
 
     # Optional error (non-inline to keep layout clean)
     if bm_error:
         embed.add_field(name="BattleMetrics", value=bm_error, inline=False)
 
     # Optional: show timezone context if restarts are configured
-    if post_restarts and restart_schedule:
-        embed.add_field(name="Restart Timezone", value=tz_disp, inline=False)
 
     await interaction.followup.send(embed=embed)
 
@@ -3095,13 +3321,13 @@ async def register_command(interaction: discord.Interaction):
             dm = await interaction.user.create_dm()
             dm_embed = create_scumbot_embed(
                 guild_id=guild_id,
-                title="Registration Instructions",
+                title="Registration Instructions - ",
                 description=(
                     "To link your Discord to your in-game SCUM profile:\n"
                     "1️⃣ Join your SCUM server connected to this Discord.\n"
-                    "2️⃣ Type the following code **in GLOBAL chat**:\n\n"
+                    "2️⃣ Type the following code below into the server **chat**\n"
+                    "3️⃣ Wait patiently for another DM confirming your account has been linked.\n\n"
                     f"```{code}```\n"
-                    "3️⃣ Once the log parser sees this code, your account will be linked."
                 ),
                 # DM context → don't show server location in footer
                 server_context=False,
@@ -3270,42 +3496,36 @@ async def debug_status_command(interaction: discord.Interaction):
 async def on_ready():
     logger.info("Discord ready (user=%s)", client.user)
 
-    # Idempotency guard
+    # Idempotency guard (discord.py can fire on_ready multiple times)
     if getattr(client, "_startup_done", False):
         logger.info("on_ready fired again; startup already completed.")
         return
     client._startup_done = True
 
+    # Core startup
     await init_db_pool()
     await load_bot_settings()
     await load_server_settings()
 
     # Log what the bot THINKS is registered locally
     local_cmds = client.tree.get_commands()
-    logger.info("Local command tree contains %d commands: %s",
-                len(local_cmds), [c.name for c in local_cmds])
+    logger.info("Local command tree contains %d commands: %s", len(local_cmds), [c.name for c in local_cmds])
 
+    # Command sync (guild sync for fast propagation)
     force_sync = os.getenv("SCUMBOT_FORCE_COMMAND_SYNC", "0") == "1"
     if force_sync or not getattr(client, "_commands_synced", False):
         try:
-            guild_synced_counts = []
             for guild in client.guilds:
-                # Critical: copy global commands into each guild for instant availability
                 client.tree.copy_global_to(guild=guild)
-
                 synced = await client.tree.sync(guild=guild)
-                guild_synced_counts.append((guild.name, guild.id, len(synced)))
                 logger.info("Commands synced (guild=%s/%s, count=%s)", guild.name, guild.id, len(synced))
 
-            # Optional: keep global sync too (not required for fast dev iteration)
-            # global_synced = await client.tree.sync()
-            # logger.info("Commands synced (global=%s)", len(global_synced))
-
-            logger.info("Commands synced across %s guild(s).", len(guild_synced_counts))
+            logger.info("Commands synced across %s guild(s).", len(client.guilds))
             client._commands_synced = True
         except Exception:
             logger.exception("Command sync failed")
 
+    # Background tasks
     if getattr(client, "_background_tasks_started", False):
         logger.info("Background tasks already running (reconnect detected; skipping).")
         return
@@ -3313,14 +3533,16 @@ async def on_ready():
     client._background_tasks_started = True
     client._background_tasks = []
 
+    # Use one consistent task creation method and keep references
     client._background_tasks.append(client.loop.create_task(run_updater_loop(client, db_pool)))
-    # If you still have the notifier loop in this file, keep this line; otherwise remove it:
     # client._background_tasks.append(client.loop.create_task(notify_completed_links_and_cleanup(client, db_pool)))
     client._background_tasks.append(client.loop.create_task(security_monitor_dispatcher(client, db_pool)))
     client._background_tasks.append(client.loop.create_task(update_bot_status(client, db_pool)))
     client._background_tasks.append(client.loop.create_task(admin_track_dispatcher(client, db_pool)))
+    client._background_tasks.append(client.loop.create_task(restart_warning_dispatcher(client)))
 
-    logger.info("Background tasks started (updater, security_monitor, status, admin_tracking)")
+    logger.info("Background tasks started (updater, restarts, security_monitor, status, admin_tracking)")
+
 
 
 def create_bot() -> commands.Bot:

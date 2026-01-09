@@ -87,6 +87,9 @@ def create_scumbot_embed(
         # SCUM-like dark orange (prison jumpsuit vibe)
         color = discord.Color.from_rgb(222, 133, 0)
 
-    embed = discord.Embed(title=title, description=description, color=color)
+    if url is None and bot_settings:
+        url = bot_settings.get("bot_website") or bot_settings.get("website")
+
+    embed = discord.Embed(title=title, description=description, color=color, url=url)
     apply_scumbot_footer(embed, bot=bot, server_location=server_location, bot_settings=bot_settings)
     return embed
